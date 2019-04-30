@@ -5,7 +5,7 @@ import TimeTable from '../../components/TimeTable';
 import messages from './messages';
 import 'antd/dist/antd.css';
 
-export default function HomePage() {
+export default function MainPage() {
   return (
     <div>
       <h1>
