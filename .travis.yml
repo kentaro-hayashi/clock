@@ -25,6 +25,8 @@ deploy:
   token:
     secure: $FIREBASE_TOKEN
   project: "production"
+  on:
+    branch: master
 
 cache:
   directories:
