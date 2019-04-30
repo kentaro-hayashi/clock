@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "clock-cc2a4"
+    "production": "clock-cc2a4",
+    "develop": "clock-dev-3ae8b"
   }
 }

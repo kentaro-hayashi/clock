@@ -20,6 +20,12 @@ notifications:
 
 after_success: 'npm run coveralls'
 
+deploy:
+  provider: firebase
+  token:
+    secure: $FIREBASE_TOKEN
+  project: "production"
+
 cache:
   directories:
     - node_modules
