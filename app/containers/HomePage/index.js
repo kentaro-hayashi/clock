@@ -1,18 +1,17 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- *
- */
-
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+// import { DatePicker } from 'antd';
+import TimeTable from '../../components/TimeTable';
 import messages from './messages';
+import 'antd/dist/antd.css';
 
 export default function HomePage() {
   return (
-    <h1>
-      <FormattedMessage {...messages.header} />
-    </h1>
+    <div>
+      <h1>
+        <FormattedMessage {...messages.header} />
+      </h1>
+      <TimeTable />
+    </div>
   );
 }
