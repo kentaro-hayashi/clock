@@ -1,6 +1,6 @@
 {
   "projects": {
     "production": "clock-cc2a4",
-    "develop": "clock-dev-3ae8b"
+    "development": "clock-dev-3ae8b"
   }
 }
