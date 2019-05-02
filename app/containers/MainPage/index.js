@@ -12,6 +12,8 @@ import { MAINPAGE } from './constants';
 import { changeLocation } from './actions';
 
 import TimeTable from '../../components/TimeTable';
+import FavAndHistory from '../../components/FavAndHistory';
+import AdBlock from '../../components/AdBlock';
 import messages from './messages';
 import 'antd/dist/antd.css';
 import saga from './saga';
@@ -29,6 +31,8 @@ function MainPage(props) {
         <FormattedMessage {...messages.header} />
       </h1>
       <TimeTable />
+      <FavAndHistory />
+      <AdBlock />
     </div>
   );
 }
