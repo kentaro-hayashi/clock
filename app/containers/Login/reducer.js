@@ -5,8 +5,8 @@ function loginReducer(state = fromJS({}), action) {
   switch (action.type) {
     case LOGIN:
       return state
-        .set('displayName', action.user.displayName)
-        .set('uid', action.user.uid);
+        .set('displayName', action.user && action.user.displayName)
+        .set('uid', action.user && action.user.uid);
     default:
       return state;
   }
