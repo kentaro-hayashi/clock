@@ -29,12 +29,16 @@ class Login extends Component {
         </p>
 
         {this.state.user ? (
-          <button onClick={this.logout}>Google Logout</button>
+          <button type="button" onClick={this.logout}>
+            Google Logout
+          </button>
         ) : (
-          <button onClick={this.login}>Google Login</button>
+          <button type="button" onClick={this.login}>
+            Google Login
+          </button>
         )}
       </div>
-    )
+    );
   }
 }
 
