@@ -6,7 +6,7 @@ import { DAEMON } from 'utils/constants';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import injectSaga from 'utils/injectSaga';
-import history from 'utils/history';
+import { Redirect } from 'react-router-dom';
 
 import { MAINPAGE } from './constants';
 import { changeLocation } from './actions';
@@ -18,10 +18,9 @@ import saga from './saga';
 
 function MainPage(props) {
   const { user } = props;
-  console.log(user);
 
   if (!user) {
-    history.push('/login');
+    return <Redirect to="/login" />;
   }
 
   return (

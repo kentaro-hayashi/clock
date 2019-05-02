@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import firebase from 'utils/firebase';
+import { Redirect } from 'react-router-dom';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import injectReducer from 'utils/injectReducer';
+
+import { login } from './actions';
+import reducer from './reducer';
+import { USER } from './constants';
 
 class Login extends Component {
-  state = {
-    user: null,
-  };
-
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
-      this.setState({ user });
+      // eslint-disable-next-line no-shadow
+      const { login } = this.props;
+      login(user);
     });
   }
 
@@ -22,16 +29,13 @@ class Login extends Component {
   }
 
   render() {
+    const { user } = this.props;
     return (
       <div className="App">
-        <p className="App-intro">
-          UID: {this.state.user && this.state.user.uid}
-        </p>
+        <p className="App-intro">UID: {user && user.uid}</p>
 
-        {this.state.user ? (
-          <button type="button" onClick={this.logout}>
-            Google Logout
-          </button>
+        {user ? (
+          <Redirect to="/" />
         ) : (
           <button type="button" onClick={this.login}>
             Google Login
@@ -42,4 +46,15 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  user: PropTypes.object,
+  login: PropTypes.func,
+};
+
+export default compose(
+  injectReducer({ key: USER, reducer }),
+  connect(
+    state => ({ user: state.user }),
+    { login },
+  ),
+)(Login);
