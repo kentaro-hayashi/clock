@@ -8,7 +8,7 @@ import injectReducer from 'utils/injectReducer';
 
 import { login } from './actions';
 import reducer from './reducer';
-import { USER } from './constants';
+import { USER } from '../../commonConstants';
 
 class Login extends Component {
   componentDidMount() {
@@ -24,17 +24,14 @@ class Login extends Component {
     firebase.auth().signInWithRedirect(provider);
   }
 
-  logout() {
-    firebase.auth().signOut();
-  }
-
   render() {
     const { user } = this.props;
+
     return (
       <div className="App">
-        <p className="App-intro">UID: {user && user.uid}</p>
+        <p className="App-intro">UID: {user && user.get('uid')}</p>
 
-        {user ? (
+        {user && user.get('uid') ? (
           <Redirect to="/" />
         ) : (
           <button type="button" onClick={this.login}>

@@ -1,5 +1,5 @@
 /**
- * Asynchronously loads the component for Login
+ * Asynchronously loads the component for Logout
  */
 
 import loadable from 'utils/loadable';

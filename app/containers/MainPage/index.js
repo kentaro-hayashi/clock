@@ -30,6 +30,7 @@ function MainPage(props) {
       <h1>
         <FormattedMessage {...messages.header} />
       </h1>
+      <div>Hi! {user.get('displayName')}</div>
       <TimeTable />
       <FavAndHistory />
       <AdBlock />
