@@ -113,6 +113,7 @@ module.exports = options => ({
     // drop any unreachable code.
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
+      FIREBASE_ENV: JSON.stringify(process.env.FIREBASE_ENV),
     }),
   ]),
   resolve: {
