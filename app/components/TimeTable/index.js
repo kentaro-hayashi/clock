@@ -1,12 +1,21 @@
 import React from 'react';
 import { DatePicker } from 'antd';
-import moment from 'moment';
+import moment from 'moment-timezone-webpack4';
+// import PropTypes from 'prop-types';
+
 import TimePair from '../TimePair';
 import TimeTableHeader from '../TimeTableHeader';
 
 function TimeTable() {
-  // eslint-disable-next-line no-unused-vars
-  const timePairs = [1, 2, 3, 4].map(i => <TimePair key={i} />);
+  const basetimeFrom = moment('2018/05/05 00:00').tz('Asia/Tokyo');
+  const basetimeTo = basetimeFrom.clone().tz('America/Los_Angeles');
+
+  const timePairs = [...Array(24).keys()].map(i => {
+    const timeFrom = basetimeFrom.clone().add(i, 'hours');
+    const timeTo = basetimeTo.clone().add(i, 'hours');
+    return <TimePair key={i} timeFrom={timeFrom} timeTo={timeTo} />;
+  });
+
   return (
     <div>
       <h2>
@@ -26,5 +35,18 @@ function TimeTable() {
 function onDateChange(date) {
   console.log(date);
 }
+
+// TimeTable.propTypes = {
+//   user: PropTypes.object,
+//   login: PropTypes.func,
+// };
+
+// export default compose(
+//   injectReducer({ key: USER, reducer }),
+//   // connect(
+//   //   state => ({ user: state.user }),
+//   //   { login },
+//   // ),
+// )(TimeTable);
 
 export default TimeTable;
