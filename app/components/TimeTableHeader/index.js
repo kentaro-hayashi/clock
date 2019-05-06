@@ -1,55 +1,64 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { Menu, Dropdown, Icon } from 'antd';
+import moment from 'moment-timezone-webpack4';
+import { Select } from 'antd';
+const { Option, OptGroup } = Select;
+
+function handleChange(value) {
+  console.log(`selected ${value}`);
+}
+
+const locations = new Map();
+const names = moment.tz.names();
+names.forEach(name => {
+  const [group, ...rest] = name.split('/');
+  const city = rest.length === 0 ? group : rest.join('/');
+
+  if (!locations.has(group)) locations.set(group, []);
+  locations.get(group).push(city);
+});
+
+function optGroups(key) {
+  const groups = [];
+  locations.forEach((cities, group) => {
+    const options = cities.map(city => {
+      if (group === city) {
+        return (
+          <Option value={[group, city].join('/')} key={[key, group].join('/')}>
+            {city}
+          </Option>
+        );
+      }
+      return (
+        <Option
+          value={[group, city].join('/')}
+          key={[key, group, city].join('/')}
+        >
+          {city}
+        </Option>
+      );
+    });
+    groups.push(
+      // eslint-disable-next-line react/no-array-index-key
+      <OptGroup label={group} key={`${key}/${group}`}>
+        {options}
+      </OptGroup>,
+    );
+  });
+  return groups;
+}
 
 function TimeTableHeader() {
-  const menu = (
-    <Menu>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.alipay.com/"
-        >
-          Tokyo
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.taobao.com/"
-        >
-          Taiwan
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.tmall.com/"
-        >
-          London
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
-
   return (
     <tr>
       <th>
-        <Dropdown overlay={menu}>
-          <a className="ant-dropdown-link" href="#">
-            Tokyo <Icon type="down" />
-          </a>
-        </Dropdown>
+        <Select onChange={handleChange} style={{ width: 200 }} showSearch>
+          {optGroups(1)}
+        </Select>
       </th>
       <th>
-        <Dropdown overlay={menu}>
-          <a className="ant-dropdown-link" href="#">
-            Taiwan <Icon type="down" />
-          </a>
-        </Dropdown>
+        <Select onChange={handleChange} style={{ width: 200 }} showSearch>
+          {optGroups(2)}
+        </Select>
       </th>
     </tr>
   );
