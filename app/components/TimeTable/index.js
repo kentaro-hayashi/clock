@@ -7,7 +7,14 @@ import TimePair from '../TimePair';
 import TimeTableHeader from '../TimeTableHeader';
 
 function TimeTable() {
-  const basetimeFrom = moment('2018/05/05 00:00').tz('Asia/Tokyo');
+  const basetimeFrom = moment()
+    .set({
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+    })
+    .tz('Asia/Tokyo');
   const basetimeTo = basetimeFrom.clone().tz('America/Los_Angeles');
 
   const timePairs = [...Array(24).keys()].map(i => {
