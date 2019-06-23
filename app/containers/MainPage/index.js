@@ -1,15 +1,15 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-// import { DatePicker } from 'antd';
 import { DAEMON } from 'utils/constants';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import injectSaga from 'utils/injectSaga';
+import injectReducer from 'utils/injectReducer';
 import { Redirect } from 'react-router-dom';
 
-import { MAINPAGE } from './constants';
-import { changeLocation } from './actions';
+import { USER, MAINPAGE } from '../../commonConstants';
+import { changeLocation, changeDate } from './actions';
 
 import TimeTable from '../../components/TimeTable';
 import FavAndHistory from '../../components/FavAndHistory';
@@ -17,21 +17,26 @@ import AdBlock from '../../components/AdBlock';
 import messages from './messages';
 import 'antd/dist/antd.css';
 import saga from './saga';
+import reducer from './reducer';
 
 function MainPage(props) {
-  const { user } = props;
-
+  // eslint-disable-next-line no-shadow
+  const { user, changeLocation, changeDate, fromLocation, toLocation } = props;
   if (!user) {
     return <Redirect to="/login" />;
   }
-
   return (
     <div>
       <h1>
         <FormattedMessage {...messages.header} />
       </h1>
       <div>Hi! {user.get('displayName')}</div>
-      <TimeTable />
+      <TimeTable
+        fromLocation={fromLocation}
+        toLocation={toLocation}
+        onChangeLocation={changeLocation}
+        onChangeDate={changeDate}
+      />
       <FavAndHistory />
       <AdBlock />
     </div>
@@ -40,14 +45,24 @@ function MainPage(props) {
 
 MainPage.propTypes = {
   user: PropTypes.object,
+  changeLocation: PropTypes.func,
+  changeDate: PropTypes.func,
+  fromLocation: PropTypes.string,
+  toLocation: PropTypes.string,
 };
 
-const withSaga = injectSaga({ key: MAINPAGE, saga, mode: DAEMON });
-
 export default compose(
-  withSaga,
+  injectReducer({ key: MAINPAGE, reducer }),
+  injectSaga({ key: MAINPAGE, saga, mode: DAEMON }),
   connect(
-    state => ({ user: state.user }),
-    { changeLocation },
+    state => ({
+      user: state[USER],
+      fromLocation: state[MAINPAGE].get('fromLocation'),
+      toLocation: state[MAINPAGE].get('toLocation'),
+    }),
+    {
+      changeLocation,
+      changeDate,
+    },
   ),
 )(MainPage);

@@ -1,11 +1,13 @@
 import React from 'react';
 import moment from 'moment-timezone-webpack4';
+import PropTypes from 'prop-types';
 import { Select } from 'antd';
-const { Option, OptGroup } = Select;
 
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
+import {
+  FROM_LOCATION,
+  TO_LOCATION,
+} from '../../containers/MainPage/constants';
+const { Option, OptGroup } = Select;
 
 const locations = new Map();
 const names = moment.tz.names();
@@ -23,7 +25,7 @@ function optGroups(key) {
     const options = cities.map(city => {
       if (group === city) {
         return (
-          <Option value={[group, city].join('/')} key={[key, group].join('/')}>
+          <Option value={group} key={[key, group].join('/')}>
             {city}
           </Option>
         );
@@ -47,21 +49,38 @@ function optGroups(key) {
   return groups;
 }
 
-function TimeTableHeader() {
+function TimeTableHeader(props) {
+  const { onChangeLocation, fromLocation, toLocation } = props;
   return (
     <tr>
       <th>
-        <Select onChange={handleChange} style={{ width: 200 }} showSearch>
+        <Select
+          defaultValue={fromLocation}
+          onChange={location => onChangeLocation(location, FROM_LOCATION)}
+          style={{ width: 200 }}
+          showSearch
+        >
           {optGroups(1)}
         </Select>
       </th>
       <th>
-        <Select onChange={handleChange} style={{ width: 200 }} showSearch>
+        <Select
+          defaultValue={toLocation}
+          onChange={location => onChangeLocation(location, TO_LOCATION)}
+          style={{ width: 200 }}
+          showSearch
+        >
           {optGroups(2)}
         </Select>
       </th>
     </tr>
   );
 }
+
+TimeTableHeader.propTypes = {
+  onChangeLocation: PropTypes.func,
+  fromLocation: PropTypes.string,
+  toLocation: PropTypes.string,
+};
 
 export default TimeTableHeader;

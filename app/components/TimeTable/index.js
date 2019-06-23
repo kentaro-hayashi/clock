@@ -1,21 +1,26 @@
 import React from 'react';
 import { DatePicker } from 'antd';
 import moment from 'moment-timezone-webpack4';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import TimePair from '../TimePair';
 import TimeTableHeader from '../TimeTableHeader';
 
-function TimeTable() {
+function TimeTable(props) {
+  const { onChangeLocation, onChangeDate } = props;
+  let { fromLocation, toLocation } = props;
+  fromLocation = fromLocation || 'Asia/Tokyo';
+  toLocation = toLocation || 'America/Los_Angeles';
+
   const basetimeFrom = moment()
+    .tz(fromLocation)
     .set({
       hour: 0,
       minute: 0,
       second: 0,
       millisecond: 0,
-    })
-    .tz('Asia/Tokyo');
-  const basetimeTo = basetimeFrom.clone().tz('America/Los_Angeles');
+    });
+  const basetimeTo = basetimeFrom.clone().tz(toLocation);
 
   const timePairs = [...Array(24).keys()].map(i => {
     const timeFrom = basetimeFrom.clone().add(i, 'hours');
@@ -27,11 +32,15 @@ function TimeTable() {
     <div>
       <h2>
         Time difference on...
-        <DatePicker defaultValue={moment()} onChange={onDateChange} />
+        <DatePicker defaultValue={moment()} onChange={onChangeDate} />
       </h2>
       <table>
         <thead>
-          <TimeTableHeader />
+          <TimeTableHeader
+            fromLocation={fromLocation}
+            toLocation={toLocation}
+            onChangeLocation={onChangeLocation}
+          />
         </thead>
         <tbody>{timePairs}</tbody>
       </table>
@@ -39,14 +48,12 @@ function TimeTable() {
   );
 }
 
-function onDateChange(date) {
-  console.log(date);
-}
-
-// TimeTable.propTypes = {
-//   user: PropTypes.object,
-//   login: PropTypes.func,
-// };
+TimeTable.propTypes = {
+  onChangeLocation: PropTypes.func,
+  onChangeDate: PropTypes.func,
+  fromLocation: PropTypes.string,
+  toLocation: PropTypes.string,
+};
 
 // export default compose(
 //   injectReducer({ key: USER, reducer }),
