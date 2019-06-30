@@ -7,19 +7,12 @@ import TimePair from '../TimePair';
 import TimeTableHeader from '../TimeTableHeader';
 
 function TimeTable(props) {
-  const { onChangeLocation, onChangeDate } = props;
+  const { onChangeLocation, onChangeDate, date } = props;
   let { fromLocation, toLocation } = props;
   fromLocation = fromLocation || 'Asia/Tokyo';
   toLocation = toLocation || 'America/Los_Angeles';
 
-  const basetimeFrom = moment()
-    .tz(fromLocation)
-    .set({
-      hour: 0,
-      minute: 0,
-      second: 0,
-      millisecond: 0,
-    });
+  const basetimeFrom = date || adjustLocalTime(moment(), fromLocation);
   const basetimeTo = basetimeFrom.clone().tz(toLocation);
 
   const timePairs = [...Array(24).keys()].map(i => {
@@ -32,7 +25,12 @@ function TimeTable(props) {
     <div>
       <h2>
         Time difference on...
-        <DatePicker defaultValue={moment()} onChange={onChangeDate} />
+        <DatePicker
+          defaultValue={moment()}
+          onChange={changedDate => {
+            onChangeDate(adjustLocalTime(changedDate, fromLocation));
+          }}
+        />
       </h2>
       <table>
         <thead>
@@ -48,11 +46,21 @@ function TimeTable(props) {
   );
 }
 
+function adjustLocalTime(now, fromLocation) {
+  return now.tz(fromLocation).set({
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+  });
+}
+
 TimeTable.propTypes = {
   onChangeLocation: PropTypes.func,
   onChangeDate: PropTypes.func,
   fromLocation: PropTypes.string,
   toLocation: PropTypes.string,
+  date: PropTypes.object,
 };
 
 // export default compose(

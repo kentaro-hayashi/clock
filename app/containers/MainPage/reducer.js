@@ -1,5 +1,9 @@
 import { fromJS } from 'immutable';
-import { UPDATE_FROM_LOCATION, UPDATE_TO_LOCATION } from './constants';
+import {
+  UPDATE_FROM_LOCATION,
+  UPDATE_TO_LOCATION,
+  UPDATE_DATE,
+} from './constants';
 
 function mainpageReducer(state = fromJS({}), action) {
   switch (action.type) {
@@ -7,6 +11,8 @@ function mainpageReducer(state = fromJS({}), action) {
       return state.set('fromLocation', action.location);
     case UPDATE_TO_LOCATION:
       return state.set('toLocation', action.location);
+    case UPDATE_DATE:
+      return state.set('date', action.date);
     default:
       return state;
   }

@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
@@ -21,7 +22,14 @@ import reducer from './reducer';
 
 function MainPage(props) {
   // eslint-disable-next-line no-shadow
-  const { user, changeLocation, changeDate, fromLocation, toLocation } = props;
+  const {
+    user,
+    changeLocation,
+    changeDate,
+    fromLocation,
+    toLocation,
+    date,
+  } = props;
   if (!user) {
     return <Redirect to="/login" />;
   }
@@ -34,6 +42,7 @@ function MainPage(props) {
       <TimeTable
         fromLocation={fromLocation}
         toLocation={toLocation}
+        date={date}
         onChangeLocation={changeLocation}
         onChangeDate={changeDate}
       />
@@ -49,6 +58,7 @@ MainPage.propTypes = {
   changeDate: PropTypes.func,
   fromLocation: PropTypes.string,
   toLocation: PropTypes.string,
+  date: PropTypes.object,
 };
 
 export default compose(
@@ -59,6 +69,7 @@ export default compose(
       user: state[USER],
       fromLocation: state[MAINPAGE].get('fromLocation'),
       toLocation: state[MAINPAGE].get('toLocation'),
+      date: state[MAINPAGE].get('date'),
     }),
     {
       changeLocation,

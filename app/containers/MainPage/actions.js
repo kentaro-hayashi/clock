@@ -3,6 +3,7 @@ import {
   UPDATE_FROM_LOCATION,
   UPDATE_TO_LOCATION,
   CHANGE_DATE,
+  UPDATE_DATE,
 } from './constants';
 
 export function changeLocation(location, fromOrTo) {
@@ -27,8 +28,16 @@ export function updateToLocation(location) {
   };
 }
 
-export function changeDate() {
+export function changeDate(date) {
   return {
     type: CHANGE_DATE,
+    date,
+  };
+}
+
+export function updateDate(date) {
+  return {
+    type: UPDATE_DATE,
+    date,
   };
 }
